@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hopitalyasser/MedicalDataBase.dart';
+import 'package:hopitalyasser/Models/Medical.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,6 +21,11 @@ class _HomeState extends State<Home> {
           'HospitalYasser',
         ),
         centerTitle: true,
+      ),
+      body: Container(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
       ),
     );
   }
