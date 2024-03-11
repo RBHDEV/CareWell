@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -13,11 +12,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 42, 157, 143),
-        foregroundColor: Color.fromARGB(255, 233, 196, 106),
+        backgroundColor: Color.fromARGB(255, 188, 108, 37),
+        foregroundColor: Color.fromARGB(255, 254, 250, 224),
         title: Text(
           'HospitalYasser',
-          
         ),
         centerTitle: true,
       ),
