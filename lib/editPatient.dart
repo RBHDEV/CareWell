@@ -11,7 +11,9 @@ class _editPatientState extends State<editPatient> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [],
+      children: [
+        
+      ],
     );
   }
 }
