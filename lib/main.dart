@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hopitalyasser/MedicalDataBase.dart';
-import 'package:hopitalyasser/editPatient.dart';
 import 'package:hopitalyasser/home.dart';
 import 'package:provider/provider.dart';
 
