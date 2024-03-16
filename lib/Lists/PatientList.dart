@@ -10,6 +10,4 @@ class APatient {
     required this.age,
     required this.ishospitalized,
   });
-
-  
 }

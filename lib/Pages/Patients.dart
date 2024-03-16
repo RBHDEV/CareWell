@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hopitalyasser/Lists/PatientList.dart';
 
 class Patients extends StatefulWidget {
@@ -10,6 +9,7 @@ class Patients extends StatefulWidget {
 }
 
 class _PatientsState extends State<Patients> {
+  //
   final List<APatient> thePatientList = [
     APatient(
         name: 'Jones Bishop',
@@ -68,7 +68,7 @@ class _PatientsState extends State<Patients> {
     ),
   ];
 
-  final List ishospitalized = ['Hospitalized', 'Not Hospitalized'];
+  final List HospitalizedChoice = ['Hospitalized', 'Not Hospitalized'];
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +87,8 @@ class _PatientsState extends State<Patients> {
                 padding: EdgeInsets.only(right: 10, left: 10, top: 15),
                 itemCount: thePatientList.length,
                 itemBuilder: (context, index) {
+                  final patient = thePatientList[index];
+                  final isHospitalized = patient.ishospitalized;
                   return Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -97,8 +99,7 @@ class _PatientsState extends State<Patients> {
                       contentPadding: EdgeInsets.all(15),
                       title: RichText(
                           text: TextSpan(
-                              text:
-                                  '${thePatientList[index].name} • ${thePatientList[index].age} yo\n',
+                              text: '${patient.name} • ${patient.age} yo\n',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.black,
@@ -117,7 +118,20 @@ class _PatientsState extends State<Patients> {
                             ),
                           ])),
                       trailing: TextButton(
-                          onPressed: () {}, child: Text(ishospitalized[1])),
+                          onPressed: () {
+                            patient.ishospitalized = !patient.ishospitalized;
+                          },
+                          child: Text(
+                            isHospitalized
+                                ? HospitalizedChoice[0]
+                                : HospitalizedChoice[1],
+                            style: TextStyle(
+                              color: isHospitalized
+                                  ? Color.fromARGB(255, 247, 38, 52)
+                                  : Color.fromARGB(255, 53, 172, 122),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
                     ),
                   );
                 })));
