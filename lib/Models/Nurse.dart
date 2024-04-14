@@ -1,16 +1,18 @@
 import 'package:isar/isar.dart';
 
-part 'Medical.g.dart';
+part 'Nurse.g.dart';
 
 @collection
-class Medical {
+class Nurse {
   Id id = Isar.autoIncrement; // you can also use id = null to auto increment
 
   late String name;
 
-  late String disease;
+  late String Speciality;
 
-  late bool isHopitalized;
+  late bool isAvailable;
 
-  late int age;
+  late String YearsofExperience;
+
+  late String Location;
 }

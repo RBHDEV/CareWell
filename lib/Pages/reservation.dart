@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:hopitalyasser/MedicalDataBase.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:hopitalyasser/Models/Patients.dart';
 
-class Patients extends StatefulWidget {
-  const Patients({super.key});
+class Reservation extends StatefulWidget {
+  const Reservation({super.key});
 
   @override
-  State<Patients> createState() => _PatientsState();
+  State<Reservation> createState() => _ReservationState();
 }
 
-class _PatientsState extends State<Patients> {
+class _ReservationState extends State<Reservation> {
   @override
   void initState() {
     super.initState();
@@ -22,7 +23,7 @@ class _PatientsState extends State<Patients> {
     await context.read<MedicalDatabase>().fetchData();
   }
 
-  final List HospitalizedChoice = ['Nursed', 'Pending'];
+  final List HospitalizedChoice = ['Pending', 'Completed'];
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +31,40 @@ class _PatientsState extends State<Patients> {
 
     final currentPatient = patientDB.currentMedical;
 
+    final filteredPatients = currentPatient
+        .where((patient) => patient.name.toLowerCase() == 'ramzi bouhadjar')
+        .toList();
+    ;
+
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 229, 229, 229),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Color.fromARGB(255, 253, 240, 213).withOpacity(0.1),
           title: Text(
-            'PATIENTS',
+            'RESERVATIONS',
             style: TextStyle(letterSpacing: 1),
           ),
           centerTitle: true,
         ),
         body: ListView.builder(
             padding: EdgeInsets.only(right: 10, left: 10, top: 15),
-            itemCount: currentPatient.length,
+            itemCount: filteredPatients.length,
             itemBuilder: (context, index) {
-              final patient = currentPatient[index];
-              final isHospitalized = patient.isHopitalized;
+              final patient = filteredPatients[index];
+              String checkCompletionStatus() {
+                if (DateTime.now().isAfter(patient.dateofbook)) {
+                  return "Completed";
+                } else {
+                  return "Pending";
+                }
+              }
+
+              bool isHospitalizedbool() {
+                // Now calling the function correctly
+                return checkCompletionStatus() == 'Completed';
+              }
+
               return Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -84,7 +102,7 @@ class _PatientsState extends State<Patients> {
                           ),
                         ),
                         TextSpan(
-                          text: 'Booking Date: ',
+                          text: 'Date: ',
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
@@ -104,22 +122,19 @@ class _PatientsState extends State<Patients> {
                         ),
                       ])),
                   trailing: TextButton(
-                      onPressed: () {
-                        patient.isHopitalized = !patient.isHopitalized;
-                      },
+                      onPressed: () {},
                       style: TextButton.styleFrom(
-                        backgroundColor: isHospitalized
+                        backgroundColor: isHospitalizedbool()
                             ? Color.fromARGB(255, 53, 172, 122).withOpacity(0.1)
-                            : Color.fromARGB(255, 247, 38, 52).withOpacity(0.1),
+                            : Color.fromARGB(255, 247, 132, 38)
+                                .withOpacity(0.1),
                       ),
                       child: Text(
-                        isHospitalized
-                            ? HospitalizedChoice[0]
-                            : HospitalizedChoice[1],
+                        checkCompletionStatus(),
                         style: TextStyle(
-                            color: isHospitalized
+                            color: isHospitalizedbool()
                                 ? Color.fromARGB(255, 53, 172, 122)
-                                : Color.fromARGB(255, 247, 38, 52),
+                                : Color.fromARGB(255, 247, 132, 38),
                             fontWeight: FontWeight.bold,
                             fontSize: 15),
                       )),
