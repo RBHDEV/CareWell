@@ -63,7 +63,7 @@ class _SettingsState extends State<Settings> {
                         MaterialPageRoute(builder: (context) => ContactsPage()),
                       );
                     },
-                    child: Text("Contacts"),
+                    child: Text("Contact"),
                   ),
                 ),
                 SizedBox(height: 100), // Spacing between buttons
@@ -115,8 +115,11 @@ class CreditsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Credits"),
-        backgroundColor: Colors.deepPurple, // Custom color for the AppBar
+        title: Text(
+          "Credits",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.deepPurple[400], // Custom color for the AppBar
       ),
       body: Center(
         child: Column(
@@ -193,11 +196,57 @@ class CreditsPage extends StatelessWidget {
 }
 
 class ContactsPage extends StatelessWidget {
+  void _showSnackBar(Color color, BuildContext context, String message) {
+    final snackBar = SnackBar(
+      backgroundColor: color,
+      content: Text(message),
+      duration: Duration(seconds: 3), // Customize duration as needed
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  TextEditingController _messageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Contacts"),
+        title: Text(
+          "Contact",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.deepPurple[400], // Custom color for the AppBar
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                controller: _messageController,
+                maxLines: null,
+                decoration: InputDecoration(
+                  hintText: 'Enter your message...',
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                ),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                if (_messageController.text.isEmpty) {
+                  _showSnackBar(Colors.grey.shade700, context,
+                      'Please fill your Message ');
+                } else {
+                  _showSnackBar(
+                      Colors.deepPurple.shade700, context, 'Message Sent! ');
+                  Navigator.pop(context);
+                }
+              },
+              child: Text('Send'),
+            ),
+          ],
+        ),
       ),
     );
   }

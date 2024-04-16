@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hopitalyasser/Pages/Nurses.dart';
 import 'package:hopitalyasser/Pages/Settings.dart';
+import 'package:hopitalyasser/Pages/SpecialityPage.dart';
 import 'package:hopitalyasser/Pages/reservation.dart';
 
 class HomeP extends StatefulWidget {
@@ -15,7 +16,7 @@ class _HomePState extends State<HomeP> {
   int _currentPage = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     Reservation(),
-    Nurses(),
+    SpecialityPage(),
     Settings(),
   ];
 
