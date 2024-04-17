@@ -110,178 +110,73 @@ class MedicalDatabase extends ChangeNotifier {
       Nurse()
         ..id = 1
         ..name = 'Aymen Mahmoud'
-        ..Speciality = 'Medical services'
+        ..Speciality = 'Psychiatric nurse'
         ..isAvailable = true
         ..YearsofExperience = '7'
         ..Location = 'next to the Nasser Pharmacy - Alger',
       Nurse()
         ..id = 2
         ..name = 'Emily White'
-        ..Speciality = 'Nursing services'
+        ..Speciality = 'Critical Care Nurse'
         ..isAvailable = false
         ..YearsofExperience = '5'
         ..Location = 'Central Hospital - New York',
       Nurse()
         ..id = 3
         ..name = 'Alex Green'
-        ..Speciality = 'Services for the elderly'
+        ..Speciality = 'Certified Registered Anesthetist'
         ..isAvailable = true
         ..YearsofExperience = '10'
         ..Location = 'Healthcare Clinic - London',
       Nurse()
         ..id = 4
         ..name = 'Sarah Lee'
-        ..Speciality = 'Laboratory testing services'
+        ..Speciality = 'Family Nurse Practitioner'
         ..isAvailable = true
         ..YearsofExperience = '8'
         ..Location = 'Community Health Center - Sydney',
       Nurse()
         ..id = 5
         ..name = 'James Park'
-        ..Speciality = 'Babysitting services'
+        ..Speciality = 'Oncology Nurse'
         ..isAvailable = false
         ..YearsofExperience = '6'
         ..Location = 'Cancer Research Institute - Seoul',
       Nurse()
         ..id = 6
         ..name = 'Laura Smith'
-        ..Speciality = 'Physiotherapy service'
+        ..Speciality = 'Nurse Midwife'
         ..isAvailable = true
         ..YearsofExperience = '9'
         ..Location = 'Women’s Health Center - Toronto',
       Nurse()
         ..id = 7
         ..name = 'John Doe'
-        ..Speciality = 'Medical services'
+        ..Speciality = 'Pediatric Nurse Practitioner'
         ..isAvailable = true
         ..YearsofExperience = '4'
-        ..Location = 'Nursing services',
+        ..Location = 'Pediatric Clinic - Los Angeles',
       Nurse()
         ..id = 8
         ..name = 'Sophia Johnson'
-        ..Speciality = 'Services for the elderly'
+        ..Speciality = 'Emergency Room Nurse'
         ..isAvailable = false
         ..YearsofExperience = '7'
         ..Location = 'Emergency Hospital - Mumbai',
       Nurse()
         ..id = 9
         ..name = 'Michael Brown'
-        ..Speciality = 'Laboratory testing services'
+        ..Speciality = 'Clinical Nurse Specialist'
         ..isAvailable = true
         ..YearsofExperience = '11'
         ..Location = 'University Medical Center - Berlin',
       Nurse()
         ..id = 10
         ..name = 'Linda Garcia'
-        ..Speciality = 'Babysitting services'
+        ..Speciality = 'Orthopedic Nurse'
         ..isAvailable = true
         ..YearsofExperience = '5'
         ..Location = 'Orthopedic Hospital - Madrid',
-      Nurse()
-        ..id = 11
-        ..name = 'Laura Smith'
-        ..Speciality = 'Physiotherapy service'
-        ..isAvailable = false
-        ..YearsofExperience = '5'
-        ..Location = 'Central Hospital - Cairo',
-      Nurse()
-        ..id = 12
-        ..name = 'Juan Perez'
-        ..Speciality = 'Medical services'
-        ..isAvailable = true
-        ..YearsofExperience = '8'
-        ..Location = 'Saint Mary Clinic - Madrid',
-      Nurse()
-        ..id = 13
-        ..name = 'Susan Johnson'
-        ..Speciality = 'Nursing services'
-        ..isAvailable = false
-        ..YearsofExperience = '9'
-        ..Location = 'Healing Hands Center - New York',
-      Nurse()
-        ..id = 14
-        ..name = 'Hassan Elmaghraby'
-        ..Speciality = 'Services for the elderly'
-        ..isAvailable = true
-        ..YearsofExperience = '3'
-        ..Location = 'Sunrise Seniors Home - Alexandria',
-      Nurse()
-        ..id = 15
-        ..name = 'Emily Zhang'
-        ..Speciality = 'Laboratory testing services'
-        ..isAvailable = true
-        ..YearsofExperience = '6'
-        ..Location = 'Health Bridge Hospital - Beijing',
-      Nurse()
-        ..id = 16
-        ..name = 'Mohamed Ali'
-        ..Speciality = 'Babysitting services'
-        ..isAvailable = false
-        ..YearsofExperience = '11'
-        ..Location = 'Heart Care Institute - Casablanca',
-      Nurse()
-        ..id = 17
-        ..name = 'Sarah Connor'
-        ..Speciality = 'Physiotherapy service'
-        ..isAvailable = true
-        ..YearsofExperience = '4'
-        ..Location = 'Bone & Joint Center - Los Angeles',
-      Nurse()
-        ..id = 18
-        ..name = 'John Doe'
-        ..Speciality = 'Medical services'
-        ..isAvailable = false
-        ..YearsofExperience = '10'
-        ..Location = 'Brain Health Clinic - London',
-      Nurse()
-        ..id = 19
-        ..name = 'Patricia Kali'
-        ..Speciality = 'Nursing services'
-        ..isAvailable = true
-        ..YearsofExperience = '5'
-        ..Location = 'Skin Care Specialists - Sydney',
-      Nurse()
-        ..id = 20
-        ..name = 'Rajesh Singh'
-        ..Speciality = 'Services for the elderly'
-        ..isAvailable = true
-        ..YearsofExperience = '6'
-        ..Location = 'Digestive Health Services - Mumbai',
-      Nurse()
-        ..id = 21
-        ..name = 'Lisa Wong'
-        ..Speciality = 'Laboratory testing services'
-        ..isAvailable = false
-        ..YearsofExperience = '7'
-        ..Location = 'Children’s Medical Center - Hong Kong',
-      Nurse()
-        ..id = 22
-        ..name = 'Omar Farooq'
-        ..Speciality = 'Babysitting services'
-        ..isAvailable = true
-        ..YearsofExperience = '5'
-        ..Location = 'Community Health Center - Dubai',
-      Nurse()
-        ..id = 23
-        ..name = 'Anna Ivanova'
-        ..Speciality = 'Physiotherapy service'
-        ..isAvailable = false
-        ..YearsofExperience = '9'
-        ..Location = 'Emergency Hospital - Moscow',
-      Nurse()
-        ..id = 24
-        ..name = 'Carlos Rodriguez'
-        ..Speciality = 'Medical services'
-        ..isAvailable = true
-        ..YearsofExperience = '12'
-        ..Location = 'General Surgery Dept - Buenos Aires',
-      Nurse()
-        ..id = 25
-        ..name = 'Grace Lim'
-        ..Speciality = 'Nursing services'
-        ..isAvailable = false
-        ..YearsofExperience = '4'
-        ..Location = 'Elderly Care Facility - Singapore',
     ];
 
     await isar.writeTxn(() async {
@@ -328,7 +223,7 @@ class MedicalDatabase extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print('____________Error fetching data from Isar DB: $e');
+      print('Error fetching data from Isar DB: $e');
       // Handle or log the error as needed
     }
   }

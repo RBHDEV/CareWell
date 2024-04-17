@@ -52,7 +52,6 @@ class _PatientsState extends State<Patients> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 color: Color.fromARGB(255, 249, 249, 249),
-                elevation: 3,
                 child: ListTile(
                   onTap: () {},
                   contentPadding: EdgeInsets.all(15),

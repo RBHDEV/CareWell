@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hopitalyasser/MedicalDataBase.dart';
-import 'package:hopitalyasser/Models/Nurse.dart';
 import 'package:hopitalyasser/addPatient.dart';
 import 'package:provider/provider.dart';
 
 class Nurses extends StatefulWidget {
-  final String data;
-  const Nurses({super.key, required this.data});
+  const Nurses({super.key});
 
   @override
   State<Nurses> createState() => _NursesState();
@@ -17,20 +15,11 @@ class _NursesState extends State<Nurses> {
   void initState() {
     super.initState();
     readData();
-    print("________This is the data recieved = ${widget.data}");
   }
 
   // Read Patients
   void readData() async {
     await context.read<MedicalDatabase>().fetchData();
-  }
-
-  List addingFilterList(currentNurse) {
-    final filteredNurses;
-    return filteredNurses = currentNurse
-        .where((nurse) =>
-            nurse.Speciality.toLowerCase() == widget.data.toLowerCase())
-        .toList();
   }
 
   final List AvailableChoice = ['Available', 'Not Available'];
@@ -50,12 +39,6 @@ class _NursesState extends State<Nurses> {
 
     final currentNurse = NurseDB.currentNurse;
 
-    final filteredNurses = currentNurse
-        .where((nurse) =>
-            nurse.Speciality.toLowerCase() == widget.data.toLowerCase())
-        .toList();
-    ;
-
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 229, 229, 229),
       appBar: AppBar(
@@ -68,16 +51,15 @@ class _NursesState extends State<Nurses> {
       ),
       body: ListView.builder(
           padding: EdgeInsets.only(right: 10, left: 10, top: 15),
-          itemCount: filteredNurses.length,
+          itemCount: currentNurse.length,
           itemBuilder: (context, index) {
-            final nurse = filteredNurses[index];
+            final nurse = currentNurse[index];
             bool isAvailable = nurse.isAvailable;
             return Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
               color: Color.fromARGB(255, 249, 249, 249),
-              elevation: 3,
               child: ListTile(
                 onTap: () {
                   if (nurse.isAvailable == true) {

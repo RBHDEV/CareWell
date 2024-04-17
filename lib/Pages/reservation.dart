@@ -32,8 +32,7 @@ class _ReservationState extends State<Reservation> {
     final currentPatient = patientDB.currentMedical;
 
     final filteredPatients = currentPatient
-        .where((patient) =>
-            patient.name.toLowerCase() == 'ramzi bouhadjar'.toLowerCase())
+        .where((patient) => patient.name.toLowerCase() == 'ramzi bouhadjar')
         .toList();
     ;
 
@@ -71,7 +70,6 @@ class _ReservationState extends State<Reservation> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 color: Color.fromARGB(255, 249, 249, 249),
-                elevation: 3,
                 child: ListTile(
                   onTap: () {},
                   contentPadding: EdgeInsets.all(15),
