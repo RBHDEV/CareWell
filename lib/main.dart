@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hopitalyasser/LoadingPage.dart';
 import 'package:hopitalyasser/MedicalDataBase.dart';
-import 'package:hopitalyasser/Pages/SpecialityPage.dart';
-import 'package:hopitalyasser/home%20N.dart';
 import 'package:hopitalyasser/home%20P.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';

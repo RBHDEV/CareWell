@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hopitalyasser/MedicalDataBase.dart';
-import 'package:hopitalyasser/Models/Nurse.dart';
 import 'package:hopitalyasser/addPatient.dart';
 import 'package:provider/provider.dart';
 
@@ -25,13 +24,12 @@ class _NursesState extends State<Nurses> {
     await context.read<MedicalDatabase>().fetchData();
   }
 
-  List addingFilterList(currentNurse) {
-    final filteredNurses;
-    return filteredNurses = currentNurse
-        .where((nurse) =>
-            nurse.Speciality.toLowerCase() == widget.data.toLowerCase())
-        .toList();
-  }
+  final List masafa1 = ['50M', '150M', '320M', '330M', '750M'];
+  final List masafa2 = ['50M', '150M', '320M', '330M', '750M'];
+  final List masafa3 = ['50M', '150M', '320M', '330M', '750M'];
+  final List masafa4 = ['50M', '150M', '320M', '330M', '750M'];
+  final List masafa5 = ['50M', '150M', '320M', '330M', '750M'];
+  final List masafa6 = ['50M', '150M', '320M', '330M', '750M'];
 
   final List AvailableChoice = ['Available', 'Not Available'];
 
