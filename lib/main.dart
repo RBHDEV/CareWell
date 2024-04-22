@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hopitalyasser/LoadingPage.dart';
 import 'package:hopitalyasser/MedicalDataBase.dart';
+import 'package:hopitalyasser/addPatient.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,14 +27,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'CareWell',
-      theme: ThemeData(
-        textTheme: GoogleFonts.openSansTextTheme(
-          Theme.of(context).textTheme, // Apply Roboto to the current text theme
+        debugShowCheckedModeBanner: false,
+        title: 'CareWell',
+        theme: ThemeData(
+          textTheme: GoogleFonts.openSansTextTheme(
+            Theme.of(context)
+                .textTheme, // Apply Roboto to the current text theme
+          ),
         ),
-      ),
-      home: LoadingPage(),
-    );
+        home: LoadingPage());
   }
 }

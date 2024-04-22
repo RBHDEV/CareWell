@@ -12,7 +12,7 @@ class HomeP extends StatefulWidget {
 }
 
 class _HomePState extends State<HomeP> {
-  int _currentPage = 0;
+  int _currentPage = 1;
   static const List<Widget> _widgetOptions = <Widget>[
     Reservation(),
     SpecialityPage(),

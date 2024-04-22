@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hopitalyasser/MedicalDataBase.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Reservation extends StatefulWidget {
   const Reservation({super.key});
@@ -22,6 +23,11 @@ class _ReservationState extends State<Reservation> {
     await context.read<MedicalDatabase>().fetchData();
   }
 
+  // Delete Patients
+  void deleteData(int id) async {
+    await context.read<MedicalDatabase>().deletePatient(id);
+  }
+
   final List HospitalizedChoice = ['Pending', 'Completed'];
 
   @override
@@ -30,11 +36,8 @@ class _ReservationState extends State<Reservation> {
 
     final currentPatient = patientDB.currentMedical;
 
-    final filteredPatients = currentPatient
-        .where((patient) =>
-            patient.name.toLowerCase() == 'ramzi bouhadjar'.toLowerCase())
-        .toList();
-    ;
+    final filteredPatients =
+        currentPatient.skipWhile((item) => item.id != 11).toList();
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 229, 229, 229),
@@ -65,80 +68,94 @@ class _ReservationState extends State<Reservation> {
                 return checkCompletionStatus() == 'Completed';
               }
 
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                color: Color.fromARGB(255, 249, 249, 249),
-                elevation: 3,
-                child: ListTile(
-                  onTap: () {},
-                  contentPadding: EdgeInsets.all(15),
-                  title: RichText(
-                      text: TextSpan(
-                          text: '${patient.name} • ${patient.age} yo\n',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            fontSize: 18,
-                            height: 1.5,
+              return Slidable(
+                startActionPane: ActionPane(motion: StretchMotion(), children: [
+                  SlidableAction(
+                      icon: Icons.delete,
+                      backgroundColor: Colors.red.shade400,
+                      label: 'Delete',
+                      onPressed: (context) {
+                        setState(() {
+                          deleteData(patient.id);
+                        });
+                      })
+                ]),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  color: Color.fromARGB(255, 249, 249, 249),
+                  elevation: 3,
+                  child: ListTile(
+                    onTap: () {},
+                    contentPadding: EdgeInsets.all(15),
+                    title: RichText(
+                        text: TextSpan(
+                            text: '${patient.name} • ${patient.age} yo\n',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                              fontSize: 18,
+                              height: 1.5,
+                            ),
+                            children: [
+                          TextSpan(
+                            text: 'Disease: ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
                           ),
-                          children: [
-                        TextSpan(
-                          text: 'Disease: ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            height: 1.5,
+                          TextSpan(
+                            text: '${patient.disease}\n',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
                           ),
+                          TextSpan(
+                            text: 'Date: ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                '${DateFormat.yMMMEd().format(patient.dateofbook).toString()}',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                        ])),
+                    trailing: TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          backgroundColor: isHospitalizedbool()
+                              ? Color.fromARGB(255, 53, 172, 122)
+                                  .withOpacity(0.1)
+                              : Color.fromARGB(255, 247, 132, 38)
+                                  .withOpacity(0.1),
                         ),
-                        TextSpan(
-                          text: '${patient.disease}\n',
+                        child: Text(
+                          checkCompletionStatus(),
                           style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Date: ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text:
-                              '${DateFormat.yMMMEd().format(patient.dateofbook).toString()}',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                      ])),
-                  trailing: TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        backgroundColor: isHospitalizedbool()
-                            ? Color.fromARGB(255, 53, 172, 122).withOpacity(0.1)
-                            : Color.fromARGB(255, 247, 132, 38)
-                                .withOpacity(0.1),
-                      ),
-                      child: Text(
-                        checkCompletionStatus(),
-                        style: TextStyle(
-                            color: isHospitalizedbool()
-                                ? Color.fromARGB(255, 53, 172, 122)
-                                : Color.fromARGB(255, 247, 132, 38),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
-                      )),
+                              color: isHospitalizedbool()
+                                  ? Color.fromARGB(255, 53, 172, 122)
+                                  : Color.fromARGB(255, 247, 132, 38),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        )),
+                  ),
                 ),
               );
             }));

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hopitalyasser/MedicalDataBase.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Patients extends StatefulWidget {
   const Patients({super.key});
@@ -20,6 +21,11 @@ class _PatientsState extends State<Patients> {
   // Read Patients
   void readData() async {
     await context.read<MedicalDatabase>().fetchData();
+  }
+
+  // Delete Patients
+  void deleteData(int id) async {
+    await context.read<MedicalDatabase>().deletePatient(id);
   }
 
   final List HospitalizedChoice = ['Nursed', 'Pending'];
@@ -47,155 +53,170 @@ class _PatientsState extends State<Patients> {
             itemBuilder: (context, index) {
               final patient = currentPatient[index];
               final isHospitalized = patient.isHopitalized;
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                color: Color.fromARGB(255, 249, 249, 249),
-                elevation: 3,
-                child: ListTile(
-                  onTap: () {},
-                  contentPadding: EdgeInsets.all(15),
-                  title: RichText(
-                      text: TextSpan(
-                          text: '${patient.name} • ${patient.age} yo\n',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            fontSize: 18,
-                            height: 1.5,
+              return Slidable(
+                startActionPane: ActionPane(motion: StretchMotion(), children: [
+                  SlidableAction(
+                      icon: Icons.delete,
+                      backgroundColor: Colors.red.shade400,
+                      label: 'Delete',
+                      onPressed: (context) {
+                        setState(() {
+                          deleteData(patient.id);
+                        });
+                      })
+                ]),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  color: Color.fromARGB(255, 249, 249, 249),
+                  elevation: 3,
+                  child: ListTile(
+                    onTap: () {},
+                    contentPadding: EdgeInsets.all(15),
+                    title: RichText(
+                        text: TextSpan(
+                            text: '${patient.name} • ${patient.age} yo\n',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                              fontSize: 18,
+                              height: 1.5,
+                            ),
+                            children: [
+                          TextSpan(
+                            text: 'Disease: ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
                           ),
-                          children: [
-                        TextSpan(
-                          text: 'Disease: ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            height: 1.5,
+                          TextSpan(
+                            text: '${patient.disease}\n',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
                           ),
+                          TextSpan(
+                            text: 'Booking Date: ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                '${DateFormat.yMMMEd().format(patient.dateofbook).toString()}\n',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Period: ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '${patient.period}\n',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Character: ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '${patient.character}\n',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Chronic illness: ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '${patient.chroIllness}\n',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Nursing tools: ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '${patient.nursingTools}',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              height: 1.5,
+                            ),
+                          ),
+                        ])),
+                    trailing: TextButton(
+                        onPressed: () {
+                          patient.isHopitalized = !patient.isHopitalized;
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: isHospitalized
+                              ? Color.fromARGB(255, 53, 172, 122)
+                                  .withOpacity(0.1)
+                              : Color.fromARGB(255, 247, 38, 52)
+                                  .withOpacity(0.1),
                         ),
-                        TextSpan(
-                          text: '${patient.disease}\n',
+                        child: Text(
+                          isHospitalized
+                              ? HospitalizedChoice[0]
+                              : HospitalizedChoice[1],
                           style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Booking Date: ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text:
-                              '${DateFormat.yMMMEd().format(patient.dateofbook).toString()}\n',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Period: ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '${patient.period}\n',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Character: ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '${patient.character}\n',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Chronic illness: ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '${patient.chroIllness}\n',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Nursing tools: ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '${patient.nursingTools}',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            height: 1.5,
-                          ),
-                        ),
-                      ])),
-                  trailing: TextButton(
-                      onPressed: () {
-                        patient.isHopitalized = !patient.isHopitalized;
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: isHospitalized
-                            ? Color.fromARGB(255, 53, 172, 122).withOpacity(0.1)
-                            : Color.fromARGB(255, 247, 38, 52).withOpacity(0.1),
-                      ),
-                      child: Text(
-                        isHospitalized
-                            ? HospitalizedChoice[0]
-                            : HospitalizedChoice[1],
-                        style: TextStyle(
-                            color: isHospitalized
-                                ? Color.fromARGB(255, 53, 172, 122)
-                                : Color.fromARGB(255, 247, 38, 52),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
-                      )),
+                              color: isHospitalized
+                                  ? Color.fromARGB(255, 53, 172, 122)
+                                  : Color.fromARGB(255, 247, 38, 52),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        )),
+                  ),
                 ),
               );
             }));

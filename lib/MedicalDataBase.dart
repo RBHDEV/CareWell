@@ -23,6 +23,11 @@ class MedicalDatabase extends ChangeNotifier {
     }
   }
 
+  Future<bool> isitfirstLaunch() async {
+    final isitfirstLaunch = await _isFirstLaunch();
+    return isitfirstLaunch;
+  }
+
   // Function to check for first launch (optional)
   static Future<bool> _isFirstLaunch() async {
     // Implement your preferred logic to determine first launch
@@ -341,12 +346,20 @@ class MedicalDatabase extends ChangeNotifier {
       String diseaseFromUser,
       bool isHopitalizedFromUser,
       String ageFromUser,
+      String characterFromUser,
+      String chroiIlnessFromUser,
+      String periodFromUser,
+      String nursingToolsFromUser,
       DateTime dateofbookFromUser) async {
     final newPatient = Patients()
       ..name = nameFromUser
       ..disease = diseaseFromUser
       ..isHopitalized = isHopitalizedFromUser
       ..age = ageFromUser
+      ..character = characterFromUser
+      ..chroIllness = chroiIlnessFromUser
+      ..period = periodFromUser
+      ..nursingTools = nursingToolsFromUser
       ..dateofbook = dateofbookFromUser;
 
     await isar.writeTxn(() => isar.patients.put(newPatient));
@@ -380,6 +393,10 @@ class MedicalDatabase extends ChangeNotifier {
       String diseaseFromUser,
       bool isHopitalizedFromUser,
       String ageFromUser,
+      String characterFromUser,
+      String chroiIlnessFromUser,
+      String periodFromUser,
+      String nursingToolsFromUser,
       DateTime dateofbookFromUser) async {
     final existingPatient = await isar.patients.get(id);
 
@@ -388,6 +405,10 @@ class MedicalDatabase extends ChangeNotifier {
       existingPatient.disease = diseaseFromUser;
       existingPatient.isHopitalized = isHopitalizedFromUser;
       existingPatient.age = ageFromUser;
+      existingPatient.character = characterFromUser;
+      existingPatient.chroIllness = chroiIlnessFromUser;
+      existingPatient.period = periodFromUser;
+      existingPatient.nursingTools = nursingToolsFromUser;
       existingPatient.dateofbook = dateofbookFromUser;
 
       await isar.writeTxn(() => isar.patients.put(existingPatient));

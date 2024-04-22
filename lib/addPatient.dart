@@ -27,9 +27,9 @@ class _addPatientState extends State<addPatient> {
 
   bool isEdited = false;
 
-  String? character = 'Unconscious';
-  String? chroiIlness = 'allergique';
-  String? nursingTools = 'yes';
+  String? character = 'Normal';
+  String? chroiIlness = 'Nothing';
+  String? nursingTools = 'No';
 
   @override
   void initState() {
@@ -362,6 +362,8 @@ class _addPatientState extends State<addPatient> {
                           },
                           items: [
                             DropdownMenuItem<String>(
+                                value: 'Normal', child: Text('Normal')),
+                            DropdownMenuItem<String>(
                                 value: 'Unconscious',
                                 child: Text('Unconscious')),
                             DropdownMenuItem<String>(
@@ -394,20 +396,22 @@ class _addPatientState extends State<addPatient> {
                         flex: 4,
                         child: DropdownButton<String>(
                           value: chroiIlness,
-                          onChanged: (String? value2) {
+                          onChanged: (String? value) {
                             setState(() {
-                              chroiIlness = value2!;
+                              chroiIlness = value!;
                             });
                           },
                           items: [
                             DropdownMenuItem<String>(
-                                value: 'allergique', child: Text('allergique')),
+                                value: 'Nothing', child: Text('Nothing')),
                             DropdownMenuItem<String>(
-                                value: 'diabétiques',
-                                child: Text('diabétiques')),
+                                value: 'Allergique', child: Text('Allergique')),
                             DropdownMenuItem<String>(
-                                value: 'hypertension',
-                                child: Text('hypertension')),
+                                value: 'Diabétiques',
+                                child: Text('Diabétiques')),
+                            DropdownMenuItem<String>(
+                                value: 'Hypertension',
+                                child: Text('Hypertension')),
                           ],
                         ),
                       )
@@ -432,9 +436,9 @@ class _addPatientState extends State<addPatient> {
                         flex: 4,
                         child: DropdownButton<String>(
                           value: nursingTools,
-                          onChanged: (String? value2) {
+                          onChanged: (String? value3) {
                             setState(() {
-                              chroiIlness = value2!;
+                              nursingTools = value3!;
                             });
                           },
                           items: [
@@ -468,6 +472,10 @@ class _addPatientState extends State<addPatient> {
                                 diseaseController.text,
                                 false,
                                 ageController.text,
+                                character!,
+                                chroiIlness!,
+                                period!,
+                                nursingTools!,
                                 dateOfBooking);
                             Navigator.pop(context);
                           } else {
