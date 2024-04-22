@@ -129,13 +129,6 @@ class CreditsPage extends StatelessWidget {
               name: 'Aymen Mahmoud',
               role: 'Founder',
             ),
-            SizedBox(height: 30), // Space between the profiles
-            profileWidget(
-              imagePath:
-                  'assets/ramzi.jpg', // Replace with your actual asset path
-              name: 'Ramzi Bouhadjar',
-              role: 'App Devoloper',
-            ),
           ],
         ),
       ),
