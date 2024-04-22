@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hopitalyasser/Pages/Nurses.dart';
-import 'package:hopitalyasser/Pages/Patients.dart';
 import 'package:hopitalyasser/home%20N.dart';
 import 'package:hopitalyasser/home%20P.dart';
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hopitalyasser/MedicalDataBase.dart';
-import 'package:hopitalyasser/Models/Nurse.dart';
 import 'package:hopitalyasser/addPatient.dart';
 import 'package:provider/provider.dart';
 
@@ -25,15 +24,38 @@ class _NursesState extends State<Nurses> {
     await context.read<MedicalDatabase>().fetchData();
   }
 
-  List addingFilterList(currentNurse) {
-    final filteredNurses;
-    return filteredNurses = currentNurse
-        .where((nurse) =>
-            nurse.Speciality.toLowerCase() == widget.data.toLowerCase())
-        .toList();
-  }
-
   final List AvailableChoice = ['Available', 'Not Available'];
+
+  final List<String> masafa1 = ['250M', '420M', '600M', '780M', '890M'];
+
+  final List<String> masafa2 = ['320M', '450M', '670M', '820M', '950M'];
+
+  final List<String> masafa3 = ['150M', '300M', '520M', '740M', '990M'];
+
+  final List<String> masafa4 = ['110M', '460M', '580M', '810M', '900M'];
+
+  final List<String> masafa5 = ['200M', '390M', '620M', '860M', '970M'];
+
+  final List<String> masafa6 = ['180M', '290M', '530M', '710M', '930M'];
+
+  List<String> chooseList() {
+    switch (widget.data) {
+      case 'Medical services':
+        return masafa1;
+      case 'Nursing services':
+        return masafa2;
+      case 'Services for the elderly':
+        return masafa3;
+      case 'Laboratory testing services':
+        return masafa4;
+      case 'Babysitting services':
+        return masafa5;
+      case 'Physiotherapy service':
+        return masafa5;
+      default:
+        return []; // return an empty list or handle as needed
+    }
+  }
 
   void _showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(
@@ -72,6 +94,7 @@ class _NursesState extends State<Nurses> {
           itemBuilder: (context, index) {
             final nurse = filteredNurses[index];
             bool isAvailable = nurse.isAvailable;
+            List<String> displayedList = chooseList();
             return Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -139,22 +162,43 @@ class _NursesState extends State<Nurses> {
                         ),
                       ),
                     ])),
-                trailing: TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      backgroundColor: isAvailable
-                          ? Color.fromARGB(255, 53, 172, 122).withOpacity(0.1)
-                          : Color.fromARGB(255, 247, 38, 52).withOpacity(0.1),
+                trailing: Column(
+                  children: [
+                    Expanded(
+                      flex: 10,
+                      child: TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                            backgroundColor: isAvailable
+                                ? Color.fromARGB(255, 53, 172, 122)
+                                    .withOpacity(0.1)
+                                : Color.fromARGB(255, 247, 38, 52)
+                                    .withOpacity(0.1),
+                          ),
+                          child: Text(
+                            isAvailable
+                                ? AvailableChoice[0]
+                                : AvailableChoice[1],
+                            style: TextStyle(
+                                color: isAvailable
+                                    ? Color.fromARGB(255, 53, 172, 122)
+                                    : Color.fromARGB(255, 247, 38, 52),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          )),
                     ),
-                    child: Text(
-                      isAvailable ? AvailableChoice[0] : AvailableChoice[1],
-                      style: TextStyle(
-                          color: isAvailable
-                              ? Color.fromARGB(255, 53, 172, 122)
-                              : Color.fromARGB(255, 247, 38, 52),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    )),
+                    Spacer(),
+                    Expanded(
+                        flex: 5,
+                        child: Text(
+                          displayedList[index],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        )),
+                  ],
+                ),
               ),
             );
           }),

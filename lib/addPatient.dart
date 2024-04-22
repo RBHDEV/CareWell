@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hopitalyasser/MedicalDataBase.dart';
@@ -21,7 +22,14 @@ class _addPatientState extends State<addPatient> {
   late TextEditingController nameController;
   late TextEditingController ageController;
   late TextEditingController diseaseController;
+  late TextEditingController periodController;
+  late TextEditingController nursingToolsController;
+  late TextEditingController chroiIlnessController;
+
   bool isEdited = false;
+
+  String? character = 'Unconscious';
+  String? chroiIlness = 'allergique';
 
   @override
   void initState() {
@@ -32,6 +40,8 @@ class _addPatientState extends State<addPatient> {
     nameController = TextEditingController();
     ageController = TextEditingController();
     diseaseController = TextEditingController();
+    periodController = TextEditingController();
+    nursingToolsController = TextEditingController();
   }
 
   @override
@@ -42,6 +52,8 @@ class _addPatientState extends State<addPatient> {
     nameController.dispose();
     ageController.dispose();
     diseaseController.dispose();
+    periodController.dispose();
+    nursingToolsController.dispose();
     super.dispose();
   }
 
@@ -66,6 +78,69 @@ class _addPatientState extends State<addPatient> {
         });
       }
     });
+  }
+
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
+  String? period;
+
+  int timeOfDayToMinutes(TimeOfDay time) {
+    return time.hour * 60 + time.minute;
+  }
+
+  Future<void> _selectTime(BuildContext context,
+      {required bool isStart}) async {
+    final TimeOfDay initialTime = TimeOfDay(hour: 9, minute: 0);
+    final newTime = await showTimePicker(
+      context: context,
+      initialTime: (isStart ? startTime : endTime) ?? initialTime,
+    );
+
+    if (newTime != null) {
+      setState(() {
+        if (isStart) {
+          startTime = newTime;
+        } else if (startTime != null &&
+            timeOfDayToMinutes(newTime) >= timeOfDayToMinutes(startTime!)) {
+          endTime = newTime;
+          calculateDuration();
+        } else {
+          showErrorDialog(context);
+        }
+      });
+    }
+  }
+
+  void calculateDuration() {
+    if (startTime != null && endTime != null) {
+      int startMinutes = timeOfDayToMinutes(startTime!);
+      int endMinutes = timeOfDayToMinutes(endTime!);
+      int durationMinutes = endMinutes - startMinutes;
+
+      int hours = durationMinutes ~/ 60;
+      int minutes = durationMinutes % 60;
+      if (hours == 0) {
+        period = '${minutes}m';
+      } else {
+        period = '${hours}h ${minutes}m';
+      }
+    }
+  }
+
+  void showErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("Invalid Time"),
+        content: Text("End time must be after start time."),
+        actions: [
+          TextButton(
+            child: Text("OK"),
+            onPressed: () => Navigator.of(ctx).pop(),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -108,7 +183,7 @@ class _addPatientState extends State<addPatient> {
                                     color: Colors.deepPurple.shade200,
                                     width: 3),
                                 borderRadius: BorderRadius.circular(15)),
-                            enabledBorder: OutlineInputBorder(
+                            border: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.black, width: 1),
                                 borderRadius: BorderRadius.circular(10))),
@@ -131,7 +206,7 @@ class _addPatientState extends State<addPatient> {
                                     color: Colors.deepPurple.shade200,
                                     width: 3),
                                 borderRadius: BorderRadius.circular(15)),
-                            enabledBorder: OutlineInputBorder(
+                            border: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.black, width: 1),
                                 borderRadius: BorderRadius.circular(10))),
@@ -154,7 +229,7 @@ class _addPatientState extends State<addPatient> {
                   controller: diseaseController,
                   decoration: InputDecoration(
                       label: Text('Disease'),
-                      focusedBorder: OutlineInputBorder(
+                      border: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Colors.deepPurple.shade200, width: 3),
                           borderRadius: BorderRadius.circular(15)),
@@ -191,23 +266,147 @@ class _addPatientState extends State<addPatient> {
                 SizedBox(
                   height: 15,
                 ),
-                TextFormField(
-                  controller: dateOfBookingController,
-                  onTap: _showDatePicker,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.calendar_month),
-                    label: Text('Date'),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black, width: 1),
-                        borderRadius: BorderRadius.circular(10)),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: TextFormField(
+                        controller: dateOfBookingController,
+                        onTap: _showDatePicker,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.calendar_month),
+                          label: Text('Date'),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1),
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        readOnly: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please fill the informations';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+
+                    ///
+
+                    Expanded(
+                      flex: 2,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please fill the informations';
+                          }
+                          return null;
+                        },
+                        onTap: () async {
+                          await _selectTime(context, isStart: true);
+                          await _selectTime(context, isStart: false);
+                          setState(() {
+                            periodController =
+                                TextEditingController(text: period);
+                          });
+                        },
+                        controller: periodController,
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.timelapse),
+                            label: Text('Period'),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.deepPurple.shade200,
+                                    width: 3),
+                                borderRadius: BorderRadius.circular(15)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 1),
+                                borderRadius: BorderRadius.circular(10))),
+                        readOnly: true,
+                      ),
+                    ),
+                  ],
+                ),
+
+                ////
+                SizedBox(
+                  height: 15,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 2,
+                          child: Text(
+                            'character : ',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
+                          )),
+                      Expanded(
+                        flex: 4,
+                        child: DropdownButton<String>(
+                          value: character,
+                          onChanged: (String? value) {
+                            setState(() {
+                              character = value!;
+                            });
+                          },
+                          items: [
+                            DropdownMenuItem<String>(
+                                value: 'Unconscious',
+                                child: Text('Unconscious')),
+                            DropdownMenuItem<String>(
+                                value: 'Bedridden', child: Text('Bedridden')),
+                            DropdownMenuItem<String>(
+                                value: 'Disabled', child: Text('Disabled')),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  readOnly: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please fill the informations';
-                    }
-                    return null;
-                  },
+                ),
+
+                ////
+
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: Text(
+                            'Chronic illness : ',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                      Expanded(
+                        flex: 4,
+                        child: DropdownButton<String>(
+                          value: chroiIlness,
+                          onChanged: (String? value2) {
+                            setState(() {
+                              chroiIlness = value2!;
+                            });
+                          },
+                          items: [
+                            DropdownMenuItem<String>(
+                                value: 'allergique', child: Text('allergique')),
+                            DropdownMenuItem<String>(
+                                value: 'diabétiques',
+                                child: Text('diabétiques')),
+                            DropdownMenuItem<String>(
+                                value: 'hypertension',
+                                child: Text('hypertension')),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
 
                 ////
@@ -250,6 +449,31 @@ class _addPatientState extends State<addPatient> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class TimeInputField extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+  final String? value;
+
+  TimeInputField({required this.label, required this.onTap, this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AbsorbPointer(
+        child: TextFormField(
+          decoration: InputDecoration(
+            labelText: label,
+            suffixIcon: Icon(Icons.access_time),
+          ),
+          controller: TextEditingController(text: value),
+          onTap: onTap,
         ),
       ),
     );
