@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hopitalyasser/LoginPage.dart';
-import 'package:hopitalyasser/home%20N.dart';
 import 'package:lottie/lottie.dart';
 
 class LoadingPage extends StatefulWidget {

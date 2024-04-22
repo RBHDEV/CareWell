@@ -15,4 +15,12 @@ class Patients {
   late String age;
 
   late DateTime dateofbook;
+
+  late String character;
+
+  late String nursingTools;
+
+  late String period;
+
+  late String chroIllness;
 }
