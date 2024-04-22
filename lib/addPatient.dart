@@ -23,13 +23,13 @@ class _addPatientState extends State<addPatient> {
   late TextEditingController ageController;
   late TextEditingController diseaseController;
   late TextEditingController periodController;
-  late TextEditingController nursingToolsController;
   late TextEditingController chroiIlnessController;
 
   bool isEdited = false;
 
   String? character = 'Unconscious';
   String? chroiIlness = 'allergique';
+  String? nursingTools = 'yes';
 
   @override
   void initState() {
@@ -41,7 +41,6 @@ class _addPatientState extends State<addPatient> {
     ageController = TextEditingController();
     diseaseController = TextEditingController();
     periodController = TextEditingController();
-    nursingToolsController = TextEditingController();
   }
 
   @override
@@ -53,7 +52,6 @@ class _addPatientState extends State<addPatient> {
     ageController.dispose();
     diseaseController.dispose();
     periodController.dispose();
-    nursingToolsController.dispose();
     super.dispose();
   }
 
@@ -80,50 +78,57 @@ class _addPatientState extends State<addPatient> {
     });
   }
 
-  TimeOfDay? startTime;
-  TimeOfDay? endTime;
+  DateTime? startDateTime;
+  DateTime? endDateTime;
   String? period;
 
-  int timeOfDayToMinutes(TimeOfDay time) {
-    return time.hour * 60 + time.minute;
-  }
-
-  Future<void> _selectTime(BuildContext context,
+  Future<void> _selectDateTime(BuildContext context,
       {required bool isStart}) async {
-    final TimeOfDay initialTime = TimeOfDay(hour: 9, minute: 0);
-    final newTime = await showTimePicker(
+    final DateTime now = DateTime.now();
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialTime: (isStart ? startTime : endTime) ?? initialTime,
+      initialDate: now,
+      firstDate: DateTime(now.year - 5),
+      lastDate: DateTime(now.year + 5),
     );
 
-    if (newTime != null) {
-      setState(() {
-        if (isStart) {
-          startTime = newTime;
-        } else if (startTime != null &&
-            timeOfDayToMinutes(newTime) >= timeOfDayToMinutes(startTime!)) {
-          endTime = newTime;
-          calculateDuration();
-        } else {
-          showErrorDialog(context);
-        }
-      });
+    if (pickedDate != null) {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(hour: now.hour, minute: now.minute),
+      );
+
+      if (pickedTime != null) {
+        final DateTime pickedDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        setState(() {
+          if (isStart) {
+            startDateTime = pickedDateTime;
+          } else if (startDateTime != null &&
+              pickedDateTime.isAfter(startDateTime!)) {
+            endDateTime = pickedDateTime;
+            calculateDuration();
+          } else {
+            showErrorDialog(context);
+          }
+        });
+      }
     }
   }
 
   void calculateDuration() {
-    if (startTime != null && endTime != null) {
-      int startMinutes = timeOfDayToMinutes(startTime!);
-      int endMinutes = timeOfDayToMinutes(endTime!);
-      int durationMinutes = endMinutes - startMinutes;
-
-      int hours = durationMinutes ~/ 60;
-      int minutes = durationMinutes % 60;
-      if (hours == 0) {
-        period = '${minutes}m';
-      } else {
-        period = '${hours}h ${minutes}m';
-      }
+    if (startDateTime != null && endDateTime != null) {
+      Duration duration = endDateTime!.difference(startDateTime!);
+      int days = duration.inDays;
+      int hours = duration.inHours % 24;
+      int minutes = duration.inMinutes % 60;
+      period = '${days}d ${hours}h ${minutes}m';
     }
   }
 
@@ -131,8 +136,9 @@ class _addPatientState extends State<addPatient> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text("Invalid Time"),
-        content: Text("End time must be after start time."),
+        title: Text("Invalid DateTime"),
+        content:
+            Text("End date and time must be after the start date and time."),
         actions: [
           TextButton(
             child: Text("OK"),
@@ -269,13 +275,13 @@ class _addPatientState extends State<addPatient> {
                 Row(
                   children: [
                     Expanded(
-                      flex: 4,
+                      flex: 6,
                       child: TextFormField(
                         controller: dateOfBookingController,
                         onTap: _showDatePicker,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.calendar_month),
-                          label: Text('Date'),
+                          label: Text('Date of Book'),
                           border: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: Colors.black, width: 1),
@@ -294,7 +300,7 @@ class _addPatientState extends State<addPatient> {
                     ///
 
                     Expanded(
-                      flex: 2,
+                      flex: 4,
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -303,8 +309,8 @@ class _addPatientState extends State<addPatient> {
                           return null;
                         },
                         onTap: () async {
-                          await _selectTime(context, isStart: true);
-                          await _selectTime(context, isStart: false);
+                          await _selectDateTime(context, isStart: true);
+                          await _selectDateTime(context, isStart: false);
                           setState(() {
                             periodController =
                                 TextEditingController(text: period);
@@ -402,6 +408,40 @@ class _addPatientState extends State<addPatient> {
                             DropdownMenuItem<String>(
                                 value: 'hypertension',
                                 child: Text('hypertension')),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: Text(
+                            'You have Nursing Tools : ',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                      Expanded(
+                        flex: 4,
+                        child: DropdownButton<String>(
+                          value: nursingTools,
+                          onChanged: (String? value2) {
+                            setState(() {
+                              chroiIlness = value2!;
+                            });
+                          },
+                          items: [
+                            DropdownMenuItem<String>(
+                                value: 'No', child: Text('No')),
+                            DropdownMenuItem<String>(
+                                value: 'Yes', child: Text('Yes')),
                           ],
                         ),
                       )
