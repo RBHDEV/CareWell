@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hopitalyasser/LoginPage.dart';
 
 class Settings extends StatefulWidget {
@@ -128,13 +126,6 @@ class CreditsPage extends StatelessWidget {
               name: 'Aymen Mahmoud',
               role: 'Founder',
             ),
-            SizedBox(height: 30), // Space between the profiles
-            profileWidget(
-              imagePath:
-                  'assets/ramzi.jpg', // Replace with your actual asset path
-              name: 'Ramzi Bouhadjar',
-              role: 'App Devoloper',
-            ),
           ],
         ),
       ),
@@ -170,28 +161,9 @@ class CreditsPage extends StatelessWidget {
   }
 
   // Helper widget to build an image inside a column
-  Widget _buildImageColumn(BuildContext context, String imagePath) {
-    return Expanded(
-      // Using Expanded to give equal space for each column
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20), // Circular border radius
-            child: Image.asset(
-              imagePath,
-              height: MediaQuery.of(context).size.height *
-                  0.2, // Dynamic height based on screen size
-              width: MediaQuery.of(context).size.width *
-                  0.4, // Dynamic width based on screen size
-              fit: BoxFit.cover, // Cover the bounds of the box
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
+// ignore: must_be_immutable
 class ContactsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

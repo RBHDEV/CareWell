@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hopitalyasser/MedicalDataBase.dart';
@@ -21,7 +22,14 @@ class _addPatientState extends State<addPatient> {
   late TextEditingController nameController;
   late TextEditingController ageController;
   late TextEditingController diseaseController;
+  late TextEditingController periodController;
+  late TextEditingController chroiIlnessController;
+
   bool isEdited = false;
+
+  String? character = 'Unconscious';
+  String? chroiIlness = 'allergique';
+  String? nursingTools = 'yes';
 
   @override
   void initState() {
@@ -32,6 +40,7 @@ class _addPatientState extends State<addPatient> {
     nameController = TextEditingController();
     ageController = TextEditingController();
     diseaseController = TextEditingController();
+    periodController = TextEditingController();
   }
 
   @override
@@ -42,6 +51,7 @@ class _addPatientState extends State<addPatient> {
     nameController.dispose();
     ageController.dispose();
     diseaseController.dispose();
+    periodController.dispose();
     super.dispose();
   }
 
@@ -66,6 +76,77 @@ class _addPatientState extends State<addPatient> {
         });
       }
     });
+  }
+
+  DateTime? startDateTime;
+  DateTime? endDateTime;
+  String? period;
+
+  Future<void> _selectDateTime(BuildContext context,
+      {required bool isStart}) async {
+    final DateTime now = DateTime.now();
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: DateTime(now.year - 5),
+      lastDate: DateTime(now.year + 5),
+    );
+
+    if (pickedDate != null) {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(hour: now.hour, minute: now.minute),
+      );
+
+      if (pickedTime != null) {
+        final DateTime pickedDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        setState(() {
+          if (isStart) {
+            startDateTime = pickedDateTime;
+          } else if (startDateTime != null &&
+              pickedDateTime.isAfter(startDateTime!)) {
+            endDateTime = pickedDateTime;
+            calculateDuration();
+          } else {
+            showErrorDialog(context);
+          }
+        });
+      }
+    }
+  }
+
+  void calculateDuration() {
+    if (startDateTime != null && endDateTime != null) {
+      Duration duration = endDateTime!.difference(startDateTime!);
+      int days = duration.inDays;
+      int hours = duration.inHours % 24;
+      int minutes = duration.inMinutes % 60;
+      period = '${days}d ${hours}h ${minutes}m';
+    }
+  }
+
+  void showErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("Invalid DateTime"),
+        content:
+            Text("End date and time must be after the start date and time."),
+        actions: [
+          TextButton(
+            child: Text("OK"),
+            onPressed: () => Navigator.of(ctx).pop(),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -108,7 +189,7 @@ class _addPatientState extends State<addPatient> {
                                     color: Colors.deepPurple.shade200,
                                     width: 3),
                                 borderRadius: BorderRadius.circular(15)),
-                            enabledBorder: OutlineInputBorder(
+                            border: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.black, width: 1),
                                 borderRadius: BorderRadius.circular(10))),
@@ -131,7 +212,7 @@ class _addPatientState extends State<addPatient> {
                                     color: Colors.deepPurple.shade200,
                                     width: 3),
                                 borderRadius: BorderRadius.circular(15)),
-                            enabledBorder: OutlineInputBorder(
+                            border: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.black, width: 1),
                                 borderRadius: BorderRadius.circular(10))),
@@ -154,7 +235,7 @@ class _addPatientState extends State<addPatient> {
                   controller: diseaseController,
                   decoration: InputDecoration(
                       label: Text('Disease'),
-                      focusedBorder: OutlineInputBorder(
+                      border: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Colors.deepPurple.shade200, width: 3),
                           borderRadius: BorderRadius.circular(15)),
@@ -191,23 +272,181 @@ class _addPatientState extends State<addPatient> {
                 SizedBox(
                   height: 15,
                 ),
-                TextFormField(
-                  controller: dateOfBookingController,
-                  onTap: _showDatePicker,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.calendar_month),
-                    label: Text('Date'),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black, width: 1),
-                        borderRadius: BorderRadius.circular(10)),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: TextFormField(
+                        controller: dateOfBookingController,
+                        onTap: _showDatePicker,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.calendar_month),
+                          label: Text('Date of Book'),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1),
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        readOnly: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please fill the informations';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+
+                    ///
+
+                    Expanded(
+                      flex: 4,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please fill the informations';
+                          }
+                          return null;
+                        },
+                        onTap: () async {
+                          await _selectDateTime(context, isStart: true);
+                          await _selectDateTime(context, isStart: false);
+                          setState(() {
+                            periodController =
+                                TextEditingController(text: period);
+                          });
+                        },
+                        controller: periodController,
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.timelapse),
+                            label: Text('Period'),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.deepPurple.shade200,
+                                    width: 3),
+                                borderRadius: BorderRadius.circular(15)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 1),
+                                borderRadius: BorderRadius.circular(10))),
+                        readOnly: true,
+                      ),
+                    ),
+                  ],
+                ),
+
+                ////
+                SizedBox(
+                  height: 15,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 2,
+                          child: Text(
+                            'character : ',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
+                          )),
+                      Expanded(
+                        flex: 4,
+                        child: DropdownButton<String>(
+                          value: character,
+                          onChanged: (String? value) {
+                            setState(() {
+                              character = value!;
+                            });
+                          },
+                          items: [
+                            DropdownMenuItem<String>(
+                                value: 'Unconscious',
+                                child: Text('Unconscious')),
+                            DropdownMenuItem<String>(
+                                value: 'Bedridden', child: Text('Bedridden')),
+                            DropdownMenuItem<String>(
+                                value: 'Disabled', child: Text('Disabled')),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  readOnly: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please fill the informations';
-                    }
-                    return null;
-                  },
+                ),
+
+                ////
+
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: Text(
+                            'Chronic illness : ',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                      Expanded(
+                        flex: 4,
+                        child: DropdownButton<String>(
+                          value: chroiIlness,
+                          onChanged: (String? value2) {
+                            setState(() {
+                              chroiIlness = value2!;
+                            });
+                          },
+                          items: [
+                            DropdownMenuItem<String>(
+                                value: 'allergique', child: Text('allergique')),
+                            DropdownMenuItem<String>(
+                                value: 'diabétiques',
+                                child: Text('diabétiques')),
+                            DropdownMenuItem<String>(
+                                value: 'hypertension',
+                                child: Text('hypertension')),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: Text(
+                            'You have Nursing Tools : ',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                      Expanded(
+                        flex: 4,
+                        child: DropdownButton<String>(
+                          value: nursingTools,
+                          onChanged: (String? value2) {
+                            setState(() {
+                              chroiIlness = value2!;
+                            });
+                          },
+                          items: [
+                            DropdownMenuItem<String>(
+                                value: 'No', child: Text('No')),
+                            DropdownMenuItem<String>(
+                                value: 'Yes', child: Text('Yes')),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
 
                 ////
@@ -250,6 +489,31 @@ class _addPatientState extends State<addPatient> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class TimeInputField extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+  final String? value;
+
+  TimeInputField({required this.label, required this.onTap, this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AbsorbPointer(
+        child: TextFormField(
+          decoration: InputDecoration(
+            labelText: label,
+            suffixIcon: Icon(Icons.access_time),
+          ),
+          controller: TextEditingController(text: value),
+          onTap: onTap,
         ),
       ),
     );

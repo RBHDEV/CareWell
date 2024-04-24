@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hopitalyasser/Pages/Nurses.dart';
-import 'package:hopitalyasser/Pages/Patients.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hopitalyasser/home%20N.dart';
 import 'package:hopitalyasser/home%20P.dart';
 
@@ -119,23 +120,322 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                   SizedBox(height: 20),
-                  SizedBox(
-                    height: 50,
-                    width: 100,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          // Use the email to decide the navigation
-                          navigateBasedOnEmail(emailController.text);
-                        } else {
-                          // Here, handle the error state or do nothing
-                          print("Form is not valid");
-                        }
-                      },
-                      child: Text('Login'),
-                    ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 100,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green[400],
+                              foregroundColor: Colors.deepPurple[600]),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              // Use the email to decide the navigation
+                              navigateBasedOnEmail(emailController.text);
+                            } else {
+                              // Here, handle the error state or do nothing
+                              print("Form is not valid");
+                            }
+                          },
+                          child: Text('Login'),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 50),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.cyanAccent[400],
+                                    foregroundColor: Colors.deepPurple[600]),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => signup()),
+                                  );
+                                },
+                                child: Text('Signup'),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            SizedBox(
+                              height: 50,
+                              width: 130,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.deepPurple[400],
+                                    foregroundColor: Colors.white),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Collab()),
+                                  );
+                                },
+                                child: Text('Collaborate'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class signup extends StatefulWidget {
+  const signup({super.key});
+
+  @override
+  State<signup> createState() => _signupState();
+}
+
+class _signupState extends State<signup> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Sign UP'),
+        backgroundColor: Color.fromARGB(255, 151, 43, 178),
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.purple,
+              Colors.blue,
+            ],
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Form(
+              child: Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Full Name',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          flex: 1,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Age',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Adress',
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      keyboardType: TextInputType.phone,
+                    ),
+                    SizedBox(height: 20),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Phone number',
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text('Sign Up'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Collab extends StatefulWidget {
+  const Collab({super.key});
+
+  @override
+  State<Collab> createState() => _CollabState();
+}
+
+class _CollabState extends State<Collab> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Collaborate with US !'),
+        backgroundColor: Color.fromARGB(255, 151, 43, 178),
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.purple,
+              Colors.blue,
+            ],
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Form(
+              child: Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Full Name',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          flex: 1,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Age',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Adress',
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Speciality',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          flex: 1,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Y.O.E',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      keyboardType: TextInputType.phone,
+                    ),
+                    SizedBox(height: 20),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Phone number',
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text('Sign Up'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

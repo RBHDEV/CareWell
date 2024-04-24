@@ -30,7 +30,7 @@ const NurseSchema = CollectionSchema(
     r'YearsofExperience': PropertySchema(
       id: 2,
       name: r'YearsofExperience',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'isAvailable': PropertySchema(
       id: 3,
@@ -65,6 +65,7 @@ int _nurseEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.Location.length * 3;
   bytesCount += 3 + object.Speciality.length * 3;
+  bytesCount += 3 + object.YearsofExperience.length * 3;
   bytesCount += 3 + object.name.length * 3;
   return bytesCount;
 }
@@ -110,7 +111,7 @@ P _nurseDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 3:
       return (reader.readBool(offset)) as P;
     case 4:
@@ -469,47 +470,55 @@ extension NurseQueryFilter on QueryBuilder<Nurse, Nurse, QFilterCondition> {
   }
 
   QueryBuilder<Nurse, Nurse, QAfterFilterCondition> yearsofExperienceEqualTo(
-      int value) {
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'YearsofExperience',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Nurse, Nurse, QAfterFilterCondition>
       yearsofExperienceGreaterThan(
-    int value, {
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'YearsofExperience',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Nurse, Nurse, QAfterFilterCondition> yearsofExperienceLessThan(
-    int value, {
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'YearsofExperience',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Nurse, Nurse, QAfterFilterCondition> yearsofExperienceBetween(
-    int lower,
-    int upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -518,6 +527,76 @@ extension NurseQueryFilter on QueryBuilder<Nurse, Nurse, QFilterCondition> {
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Nurse, Nurse, QAfterFilterCondition> yearsofExperienceStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'YearsofExperience',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Nurse, Nurse, QAfterFilterCondition> yearsofExperienceEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'YearsofExperience',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Nurse, Nurse, QAfterFilterCondition> yearsofExperienceContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'YearsofExperience',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Nurse, Nurse, QAfterFilterCondition> yearsofExperienceMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'YearsofExperience',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Nurse, Nurse, QAfterFilterCondition> yearsofExperienceIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'YearsofExperience',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Nurse, Nurse, QAfterFilterCondition>
+      yearsofExperienceIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'YearsofExperience',
+        value: '',
       ));
     });
   }
@@ -868,9 +947,11 @@ extension NurseQueryWhereDistinct on QueryBuilder<Nurse, Nurse, QDistinct> {
     });
   }
 
-  QueryBuilder<Nurse, Nurse, QDistinct> distinctByYearsofExperience() {
+  QueryBuilder<Nurse, Nurse, QDistinct> distinctByYearsofExperience(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'YearsofExperience');
+      return query.addDistinctBy(r'YearsofExperience',
+          caseSensitive: caseSensitive);
     });
   }
 
@@ -907,7 +988,7 @@ extension NurseQueryProperty on QueryBuilder<Nurse, Nurse, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Nurse, int, QQueryOperations> YearsofExperienceProperty() {
+  QueryBuilder<Nurse, String, QQueryOperations> YearsofExperienceProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'YearsofExperience');
     });

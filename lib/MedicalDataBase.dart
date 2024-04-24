@@ -33,77 +33,117 @@ class MedicalDatabase extends ChangeNotifier {
 
   // Function to insert sample data
   static Future<void> _insertSampleData() async {
-    final List<Patients> patientsdata = [
+    final List<Patients> patientsData = [
       Patients()
         ..id = 1
         ..name = 'Jones Bishop'
         ..disease = 'Acute cholecystitis'
         ..age = '25'
         ..isHopitalized = false
-        ..dateofbook = DateTime(2024, 04, 04, 00, 00, 00),
+        ..dateofbook = DateTime(2024, 04, 04, 00, 00, 00)
+        ..character = 'Normal'
+        ..chroIllness = 'Nothing'
+        ..nursingTools = 'No'
+        ..period = '2D 10H 30M',
       Patients()
         ..id = 2
         ..name = 'Thea Griffith'
         ..disease = 'Allergic rhinitis'
         ..age = '38'
         ..isHopitalized = true
-        ..dateofbook = DateTime(2024, 05, 07, 00, 00, 00),
+        ..dateofbook = DateTime(2024, 05, 07, 00, 00, 00)
+        ..character = 'Disabled'
+        ..chroIllness = 'allergique'
+        ..nursingTools = 'Yes'
+        ..period = '4D 12H 00M',
       Patients()
         ..id = 3
         ..name = 'Daniel Contreras'
         ..disease = 'Bone cancer'
         ..age = '50'
         ..isHopitalized = false
-        ..dateofbook = DateTime(2024, 06, 03, 00, 00, 00),
+        ..dateofbook = DateTime(2024, 06, 03, 00, 00, 00)
+        ..character = 'Bedridden patient'
+        ..chroIllness = 'Nothing'
+        ..nursingTools = 'Yes'
+        ..period = '6D 8H 15M',
       Patients()
         ..id = 4
         ..name = 'Miley Russell'
         ..disease = 'Chlamydia'
         ..age = '20'
         ..isHopitalized = true
-        ..dateofbook = DateTime(2024, 07, 15, 00, 00, 00),
+        ..dateofbook = DateTime(2024, 07, 15, 00, 00, 00)
+        ..character = 'Normal'
+        ..chroIllness = 'Nothing'
+        ..nursingTools = 'No'
+        ..period = '1D 4H 20M',
       Patients()
         ..id = 5
         ..name = 'Itzel Rich'
         ..disease = 'Depression'
         ..age = '14'
         ..isHopitalized = false
-        ..dateofbook = DateTime(2024, 07, 23, 00, 00, 00),
+        ..dateofbook = DateTime(2024, 07, 23, 00, 00, 00)
+        ..character = 'Disabled'
+        ..chroIllness = 'Nothing'
+        ..nursingTools = 'No'
+        ..period = '0D 3H 50M',
       Patients()
         ..id = 6
         ..name = 'Sarah Lee'
         ..disease = 'Flu'
         ..age = '32'
         ..isHopitalized = true
-        ..dateofbook = DateTime(2024, 04, 29, 00, 00, 00),
+        ..dateofbook = DateTime(2024, 04, 29, 00, 00, 00)
+        ..character = 'Unconscious'
+        ..chroIllness = 'hypertension'
+        ..nursingTools = 'Yes'
+        ..period = '3D 7H 30M',
       Patients()
         ..id = 7
         ..name = 'Alex Miller'
         ..disease = 'Sprained ankle'
         ..age = '18'
         ..isHopitalized = false
-        ..dateofbook = DateTime(2024, 11, 01, 00, 00, 00),
+        ..dateofbook = DateTime(2024, 11, 01, 00, 00, 00)
+        ..character = 'Normal'
+        ..chroIllness = 'Nothing'
+        ..nursingTools = 'No'
+        ..period = '0D 2H 10M',
       Patients()
         ..id = 8
         ..name = 'Olivia Garcia'
         ..disease = 'Diabetes'
         ..age = '65'
         ..isHopitalized = true
-        ..dateofbook = DateTime(2024, 10, 14, 00, 00, 00),
+        ..dateofbook = DateTime(2024, 10, 14, 00, 00, 00)
+        ..character = 'Disabled'
+        ..chroIllness = 'diabétiques'
+        ..nursingTools = 'Yes'
+        ..period = '5D 13H 45M',
       Patients()
         ..id = 9
         ..name = 'Noah Hernandez'
         ..disease = 'Food poisoning'
         ..age = '7'
         ..isHopitalized = false
-        ..dateofbook = DateTime(2024, 11, 17, 00, 00, 00),
+        ..dateofbook = DateTime(2024, 11, 17, 00, 00, 00)
+        ..character = 'Normal'
+        ..chroIllness = 'Nothing'
+        ..nursingTools = 'No'
+        ..period = '0D 1H 20M',
       Patients()
         ..id = 10
         ..name = 'Sophia Parker'
         ..disease = 'Headache'
         ..age = '42'
         ..isHopitalized = false
-        ..dateofbook = DateTime(2024, 12, 04, 00, 00, 00),
+        ..dateofbook = DateTime(2024, 12, 04, 00, 00, 00)
+        ..character = 'Normal'
+        ..chroIllness = 'Nothing'
+        ..nursingTools = 'No'
+        ..period = '0D 0H 45M',
     ];
 
     final List<Nurse> nursedata = [
@@ -180,7 +220,7 @@ class MedicalDatabase extends ChangeNotifier {
     ];
 
     await isar.writeTxn(() async {
-      await isar.patients.putAll(patientsdata);
+      await isar.patients.putAll(patientsData);
       await isar.nurses.putAll(nursedata);
     });
   }

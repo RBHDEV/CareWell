@@ -94,7 +94,79 @@ class _PatientsState extends State<Patients> {
                         ),
                         TextSpan(
                           text:
-                              '${DateFormat.yMMMEd().format(patient.dateofbook).toString()}',
+                              '${DateFormat.yMMMEd().format(patient.dateofbook).toString()}\n',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            height: 1.5,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Period: ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            height: 1.5,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '${patient.period}\n',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            height: 1.5,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Character: ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            height: 1.5,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '${patient.character}\n',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            height: 1.5,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Chronic illness: ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            height: 1.5,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '${patient.chroIllness}\n',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            height: 1.5,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Nursing tools: ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                            height: 1.5,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '${patient.nursingTools}',
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w400,

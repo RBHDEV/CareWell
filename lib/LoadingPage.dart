@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hopitalyasser/LoginPage.dart';
-import 'package:hopitalyasser/home%20N.dart';
+import 'package:hopitalyasser/PageOfRules.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
@@ -11,12 +12,28 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
+  static Future<bool> _isFirstLaunch() async {
+    // Implement your preferred logic to determine first launch
+    // (e.g., SharedPreferences, local file existence)
+    final prefs = await SharedPreferences.getInstance();
+    return !prefs.containsKey('medicalAppLaunched');
+  }
+
   Future<void> showAnimationAndPush() async {
-    await Future.delayed(Duration(seconds: 3));
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
+    final firstLaunch = await _isFirstLaunch();
+    if (firstLaunch) {
+      await Future.delayed(Duration(seconds: 3));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    } else {
+      await Future.delayed(Duration(seconds: 3));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => PageOFRules()),
+      );
+    }
   }
 
   @override
