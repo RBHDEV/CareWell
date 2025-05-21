@@ -4,7 +4,8 @@ import 'package:hopitalyasser/addPatient.dart';
 import 'package:provider/provider.dart';
 
 class Nurses extends StatefulWidget {
-  const Nurses({super.key});
+  final String? data;
+  const Nurses({super.key, required this.data});
 
   @override
   State<Nurses> createState() => _NursesState();
@@ -162,9 +163,9 @@ class _NursesState extends State<Nurses> {
                           style: TextButton.styleFrom(
                             backgroundColor: isAvailable
                                 ? Color.fromARGB(255, 53, 172, 122)
-                                    .withOpacity(0.1)
+                                    .withValues(alpha: 0.1)
                                 : Color.fromARGB(255, 247, 38, 52)
-                                    .withOpacity(0.1),
+                                    .withValues(alpha: 0.1),
                           ),
                           child: Text(
                             isAvailable
